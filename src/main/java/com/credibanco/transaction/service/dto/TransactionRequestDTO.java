@@ -3,7 +3,7 @@ package com.credibanco.transaction.service.dto;
 public class TransactionRequestDTO {
 	
 	private String cardId;
-	private String price;
+	private Integer price;
 	
 	public String getCardId() {
 		return cardId;
@@ -11,10 +11,10 @@ public class TransactionRequestDTO {
 	public void setCardId(String cardId) {
 		this.cardId = cardId;
 	}
-	public String getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 	
