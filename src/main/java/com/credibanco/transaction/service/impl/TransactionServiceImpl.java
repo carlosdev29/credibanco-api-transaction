@@ -9,11 +9,15 @@ import com.credibanco.transaction.client.dto.CardBalanceResponseDTO;
 import com.credibanco.transaction.db.repository.ITransactionRepository;
 import com.credibanco.transaction.db.repository.entity.TransactionEntity;
 import com.credibanco.transaction.service.ITransactionService;
+import com.credibanco.transaction.service.dto.CardDTO;
+import com.credibanco.transaction.service.dto.CurrencyDTO;
 import com.credibanco.transaction.service.dto.StatusTransactionDTO;
+import com.credibanco.transaction.service.dto.TransactionDTO;
 import com.credibanco.transaction.service.dto.TransactionRequestDTO;
 import com.credibanco.transaction.service.dto.TransactionResponseCancelTRDTO;
 import com.credibanco.transaction.service.dto.TransactionResponseDTO;
 import com.credibanco.transaction.service.dto.TransactionResponseGetDTO;
+import com.credibanco.transaction.service.dto.TypeTransactionDTO;
 
 
 @Service
@@ -37,6 +41,7 @@ public class TransactionServiceImpl implements ITransactionService {
 		String transactionId = transactionRequestDTO.getCardId().substring(0,6);
 		TransactionEntity transactionEntity = 
 				this.repository.findById(Integer.valueOf(transactionId)).orElse(null);
+		System.out.println(transactionEntity);
 		cardBalanceRequestDTO.setAmmount(transactionRequestDTO.getPrice());
 		cardBalanceRequestDTO.setTypeTrans(TYPE_TRANSACTION);
 		cardBalanceRequestDTO.setCardNumber(transactionRequestDTO.getCardId());
@@ -51,9 +56,28 @@ public class TransactionServiceImpl implements ITransactionService {
 	
 	
 	@Override
-	public TransactionResponseGetDTO getTransactionById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public TransactionResponseGetDTO getTransactionById(Integer id) { 
+		TransactionDTO transactionDTO = new TransactionDTO();
+		TypeTransactionDTO typeTransactionDTO = new TypeTransactionDTO();
+		CurrencyDTO currencyDTO = new CurrencyDTO();
+		CardDTO cardDTO = new CardDTO();
+		StatusTransactionDTO statusTransactionDTO = new StatusTransactionDTO();
+		TransactionResponseGetDTO transactionResponseGetDTO =
+				new TransactionResponseGetDTO();
+		TransactionEntity transactionEntity = this.repository
+				.findById(id).orElse(null);
+		transactionDTO.setAmmmount(transactionEntity.getAmmmount());
+		typeTransactionDTO.setId(transactionEntity.getTypeTransaction().getId());
+		currencyDTO.setId(transactionEntity.getCurrency().getId());
+		cardDTO.setId(transactionEntity.getCard().getId());
+		transactionDTO.setTypeTransaction(typeTransactionDTO);
+		transactionDTO.setCurrency(currencyDTO);
+		transactionDTO.setCard(cardDTO);
+		statusTransactionDTO.setCod("201");
+		statusTransactionDTO.setMessage("Exitgoso");
+		transactionResponseGetDTO.setTransaction(transactionDTO);
+		transactionResponseGetDTO.setStatusTransactionDTO(statusTransactionDTO);
+		return transactionResponseGetDTO;
 	}
 	
 	
